@@ -1,0 +1,71 @@
+{
+  "builders": [
+    {
+      "type": "parallels-iso",
+      "vm_name": "coreos-alpha",
+
+      "iso_checksum": "{{user `sha1`}}",
+      "iso_checksum_type": "sha1",
+      "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `version`}}/coreos_production_iso_image.iso",
+
+      "http_directory": "files",
+
+      "ssh_port": 22,
+      "ssh_username": "core",
+      "ssh_key_path": "files/vagrant",
+      "ssh_wait_timeout": "10m",
+
+      "guest_os_type": "linux-2.6",
+      "disk_size": 40960,
+      "prlctl": [
+        [ "set", "{{.Name}}", "--memsize", "1024" ],
+        [ "set", "{{.Name}}", "--cpus", "1" ]
+      ],
+      "parallels_tools_mode": "disable",
+
+      "boot_command": [
+        "sudo -i<enter>",
+        "systemctl stop sshd.socket<enter>",
+        "coreos-install -d /dev/sda -C {{user `channel`}}<enter>",
+        "<wait10>",
+        "<wait10>",
+        "<wait10>",
+        "<wait10>",
+        "<wait10>",
+        "<wait10>",
+        "<wait10>",
+        "mount /dev/sda6 /mnt<enter>",
+        "cd /mnt<enter>",
+        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/cloud-config.yml<enter>",
+        "mkdir -p /mnt/bin<enter>",
+        "cd /mnt/bin<enter>",
+        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/coreos-setup-environment<enter>",
+        "chmod +x coreos-setup-environment<enter>",
+        "reboot<enter>"
+      ],
+      "boot_wait": "10s",
+      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+
+      "output_directory": "packer-coreos-{{user `channel`}}-{{user `version`}}-parallels",
+      "prlctl_version_file": ".prlctl_version"
+    }
+  ],
+  "post-processors": [
+    {
+      "output": "./builds/{{.Provider}}/coreos-{{user `channel`}}.box",
+      "type": "vagrant",
+      "vagrantfile_template": "files/box/Vagrantfile",
+      "include": [
+        "files/box/metadata.json",
+        "files/box/base_mac.rb",
+        "files/box/change_host_name.rb",
+        "files/box/configure_networks.rb"
+      ]
+    }
+  ],
+  "variables": {
+    "channel": "alpha",
+    "version": "current",
+    "sha1": "ae453238605c120c16657a2775cf6955b58599d4"
+  }
+}
