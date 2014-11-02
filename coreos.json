@@ -26,28 +26,35 @@
       "boot_command": [
         "sudo -i<enter>",
         "systemctl stop sshd.socket<enter>",
-        "coreos-install -d /dev/sda -C {{user `channel`}}<enter>",
-        "<wait10>",
-        "<wait10>",
-        "<wait10>",
-        "<wait10>",
-        "<wait10>",
-        "<wait10>",
-        "<wait10>",
-        "mount /dev/sda6 /mnt<enter>",
-        "cd /mnt<enter>",
-        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/cloud-config.yml<enter>",
-        "mkdir -p /mnt/bin<enter>",
-        "cd /mnt/bin<enter>",
-        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/coreos-setup-environment<enter>",
-        "chmod +x coreos-setup-environment<enter>",
+        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.yml<enter>",
+        "coreos-install -d /dev/sda -C {{user `channel`}} -c install.yml<enter>",
         "reboot<enter>"
       ],
       "boot_wait": "10s",
-      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+      "shutdown_command": "sudo -S shutdown -P now",
 
-      "output_directory": "packer-coreos-{{user `channel`}}-{{user `version`}}-parallels",
+      "output_directory": "builds/packer-coreos-{{user `channel`}}-{{user `version`}}-parallels",
       "prlctl_version_file": ".prlctl_version"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "files/coreos-setup-environment",
+      "destination": "coreos-setup-environment" 
+    },
+    {
+      "type": "file",
+      "source": "files/cloud-config.yml",
+      "destination": "cloud-config.yml" 
+    },
+    {
+      "type": "shell",
+      "environment_vars" : [],
+      "scripts": [
+        "scripts/oem.sh",
+        "scripts/cleanup.sh"
+      ]
     }
   ],
   "post-processors": [
