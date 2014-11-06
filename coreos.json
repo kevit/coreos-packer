@@ -2,7 +2,7 @@
   "builders": [
     {
       "type": "parallels-iso",
-      "vm_name": "coreos-alpha",
+      "vm_name": "coreos-{{user `channel`}}",
 
       "iso_checksum": "{{user `sha1`}}",
       "iso_checksum_type": "sha1",
@@ -35,6 +35,42 @@
 
       "output_directory": "builds/packer-coreos-{{user `channel`}}-{{user `version`}}-parallels",
       "prlctl_version_file": ".prlctl_version"
+    },
+    {
+      "type": "virtualbox-iso",
+      "vm_name": "coreos-{{user `channel`}}",
+
+      "iso_checksum": "{{user `sha1`}}",
+      "iso_checksum_type": "sha1",
+      "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `version`}}/coreos_production_iso_image.iso",
+
+      "http_directory": "files",
+
+      "ssh_port": 22,
+      "ssh_username": "core",
+      "ssh_key_path": "files/vagrant",
+      "ssh_wait_timeout": "10m",
+
+      "guest_os_type": "Linux26_64",
+      "disk_size": 40960,
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "1024" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "1" ]
+      ],
+      "guest_additions_mode": "disable",
+
+      "boot_command": [
+        "sudo -i<enter>",
+        "systemctl stop sshd.socket<enter>",
+        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.yml<enter>",
+        "coreos-install -d /dev/sda -C {{user `channel`}} -c install.yml<enter>",
+        "reboot<enter>"
+      ],
+      "boot_wait": "30s",
+      "shutdown_command": "sudo -S shutdown -P now",
+
+      "output_directory": "builds/packer-coreos-{{user `channel`}}-{{user `version`}}-virtualbox",
+      "virtualbox_version_file": ".virtualbox_version"
     }
   ],
   "provisioners": [
@@ -73,6 +109,6 @@
   "variables": {
     "channel": "alpha",
     "version": "current",
-    "sha1": "ae453238605c120c16657a2775cf6955b58599d4"
+    "sha1": "0fc7eee6d2a23d4e7afb05da5feaac57e8760476"
   }
 }
