@@ -2,7 +2,6 @@ VERSION_ID := 1.0.0
 CHANNEL    := alpha
 
 FILES = \
-	files/box/base_mac.rb \
 	files/box/change_host_name.rb \
 	files/box/configure_networks.rb \
 	files/box/Vagrantfile \

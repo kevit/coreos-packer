@@ -7,7 +7,6 @@ end
 
 require_relative 'change_host_name.rb'
 require_relative 'configure_networks.rb'
-require_relative 'base_mac.rb'
 
 Vagrant.configure("2") do |config|
   # SSH in as the default 'core' user, it has the vagrant ssh key.
@@ -20,6 +19,7 @@ Vagrant.configure("2") do |config|
     # Guest Additions are unavailable.
     vb.check_guest_additions = false
     vb.functional_vboxsf = false
+    vb.gui = false
 
     # Fix docker not being able to resolve private registry in VirtualBox
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]

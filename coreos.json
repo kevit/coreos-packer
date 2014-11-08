@@ -16,6 +16,7 @@
       "ssh_wait_timeout": "10m",
 
       "guest_os_type": "linux-2.6",
+      "hard_drive_interface": "sata",
       "disk_size": 40960,
       "prlctl": [
         [ "set", "{{.Name}}", "--memsize", "1024" ],
@@ -51,8 +52,8 @@
       "ssh_key_path": "files/vagrant",
       "ssh_wait_timeout": "10m",
 
-      "headless": "true",
       "guest_os_type": "Linux26_64",
+      "hard_drive_interface": "sata",
       "disk_size": 40960,
       "vboxmanage": [
         [ "modifyvm", "{{.Name}}", "--memory", "1024" ],
@@ -100,7 +101,6 @@
       "output": "./builds/{{.Provider}}/coreos-{{user `channel`}}.box",
       "vagrantfile_template": "files/box/Vagrantfile",
       "include": [
-        "files/box/base_mac.rb",
         "files/box/change_host_name.rb",
         "files/box/configure_networks.rb"
       ]
