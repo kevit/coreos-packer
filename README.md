@@ -6,7 +6,7 @@ Packer.io templates for CoreOS. These are based on the following:
   - https://github.com/coreos/coreos-overlay/tree/master/coreos-base/oem-vagrant
   - https://github.com/YungSang/coreos-packer
 
-Currently only parallels and alpha channel is supported.
+Currently only parallels and virtualbox are supported.
 
 Building
 ========
@@ -14,5 +14,14 @@ Building
 To build run the following:
 
 ```
-packer build coreos.json 
+packer build -parallel=false coreos.json 
 ```
+
+This will build coreos from the alpha channel. To build from other channels run:
+
+```
+packer build -parallel=false -var 'channel=beta' coreos.json 
+```
+
+channel can be set to "stable", "beta" or "alpha". Default is "alpha".
+

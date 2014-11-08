@@ -4,8 +4,8 @@
       "type": "parallels-iso",
       "vm_name": "coreos-{{user `channel`}}",
 
-      "iso_checksum": "{{user `sha1`}}",
-      "iso_checksum_type": "sha1",
+      "iso_checksum": "{{user `checksum`}}",
+      "iso_checksum_type": "{{user `checksum_type`}}",
       "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `version`}}/coreos_production_iso_image.iso",
 
       "http_directory": "files",
@@ -40,8 +40,8 @@
       "type": "virtualbox-iso",
       "vm_name": "coreos-{{user `channel`}}",
 
-      "iso_checksum": "{{user `sha1`}}",
-      "iso_checksum_type": "sha1",
+      "iso_checksum": "{{user `checksum`}}",
+      "iso_checksum_type": "{{user `checksum_type`}}",
       "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `version`}}/coreos_production_iso_image.iso",
 
       "http_directory": "files",
@@ -95,8 +95,8 @@
   ],
   "post-processors": [
     {
-      "output": "./builds/{{.Provider}}/coreos-{{user `channel`}}.box",
       "type": "vagrant",
+      "output": "./builds/{{.Provider}}/coreos-{{user `channel`}}.box",
       "vagrantfile_template": "files/box/Vagrantfile",
       "include": [
         "files/box/metadata.json",
@@ -109,6 +109,7 @@
   "variables": {
     "channel": "alpha",
     "version": "current",
-    "sha1": "0fc7eee6d2a23d4e7afb05da5feaac57e8760476"
+    "checksum_type": "none",
+    "checksum": "",
   }
 }
