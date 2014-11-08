@@ -51,6 +51,7 @@
       "ssh_key_path": "files/vagrant",
       "ssh_wait_timeout": "10m",
 
+      "headless": "true",
       "guest_os_type": "Linux26_64",
       "disk_size": 40960,
       "vboxmanage": [
@@ -99,7 +100,6 @@
       "output": "./builds/{{.Provider}}/coreos-{{user `channel`}}.box",
       "vagrantfile_template": "files/box/Vagrantfile",
       "include": [
-        "files/box/metadata.json",
         "files/box/base_mac.rb",
         "files/box/change_host_name.rb",
         "files/box/configure_networks.rb"
@@ -110,6 +110,6 @@
     "channel": "alpha",
     "version": "current",
     "checksum_type": "none",
-    "checksum": "",
+    "checksum": ""
   }
 }

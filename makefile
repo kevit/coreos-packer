@@ -21,8 +21,8 @@ builds/virtualbox/coreos-$(CHANNEL).box:
 	packer build -only=virtualbox-iso coreos.json
 
 install: builds/parallels/coreos-$(CHANNEL).box builds/virtualbox/coreos-$(CHANNEL).box
-	vagrant box add --force --name coreos-$(CHANNEL) builds/parallels/coreos-$(CHANNEL).box
-	vagrant box add --force --name coreos-$(CHANNEL) builds/virtualbox/coreos-$(CHANNEL).box
+	vagrant box add --force --name --provider=parallels coreos-$(CHANNEL) builds/parallels/coreos-$(CHANNEL).box
+	vagrant box add --force --name --provider=virtualbox coreos-$(CHANNEL) builds/virtualbox/coreos-$(CHANNEL).box
 
 clean:
 	rm -fr builds
