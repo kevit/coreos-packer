@@ -5,7 +5,6 @@ FILES = \
 	files/box/base_mac.rb \
 	files/box/change_host_name.rb \
 	files/box/configure_networks.rb \
-	files/box/metadata.json \
 	files/box/Vagrantfile \
 	files/cloud-config.yml \
 	files/coreos-setup-environment \
