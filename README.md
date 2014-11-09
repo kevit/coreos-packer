@@ -8,6 +8,14 @@ Packer.io templates for CoreOS. These are based on the following:
 
 Currently only parallels and virtualbox are supported.
 
+Requirements
+============
+
+Parallels Desktop 10
+Parallels SDK 10
+PrlUtils from https://github.com/bassamtabbara/prl-utils
+
+
 Building
 ========
 
