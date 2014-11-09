@@ -23,5 +23,7 @@ This will build coreos from the alpha channel. To build from other channels run:
 packer build -parallel=false -var 'channel=beta' coreos.json 
 ```
 
-channel can be set to "stable", "beta" or "alpha". Default is "alpha".
+channel can be set to "stable", "beta" or "alpha". Default is "alpha". 
+
+The -parallel=false is used to avoid a bug in packer (see https://github.com/mitchellh/packer/issues/1665)
 
