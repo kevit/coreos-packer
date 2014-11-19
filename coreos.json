@@ -1,6 +1,31 @@
 {
   "builders": [
     {
+"type": "qemu",
+    "boot_command": [
+        "sudo -i<enter>",
+        "systemctl stop sshd.socket<enter>",
+        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.yml<enter>",
+        "coreos-install -d /dev/sda -C {{user `channel`}} -c install.yml<enter>",
+        "reboot<enter>"
+    ],
+    "accelerator": "kvm",
+      "iso_checksum": "{{user `checksum`}}",
+      "iso_checksum_type": "{{user `checksum_type`}}",
+      "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `version`}}/coreos_production_iso_image.iso",
+      "http_directory": "files",
+      "ssh_port": 22,
+      "ssh_username": "core",
+      "ssh_key_path": "files/vagrant",
+      "ssh_wait_timeout": "10m",
+      "disk_size": 4096,
+      "format": "qcow2",
+      "headless": true,
+      "boot_wait": "10s",
+      "shutdown_command": "sudo -S shutdown -P now",
+      "output_directory": "builds/packer-coreos-{{user `channel`}}-{{user `version`}}-parallels"
+  },
+    {
       "type": "parallels-iso",
       "vm_name": "coreos-{{user `channel`}}",
 
@@ -109,7 +134,7 @@
   "variables": {
     "channel": "alpha",
     "version": "current",
-    "checksum_type": "none",
-    "checksum": ""
+    "checksum_type": "md5",
+    "checksum": "771552e66649f94cd7f61edda6b2fa50"
   }
 }
