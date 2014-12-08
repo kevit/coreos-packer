@@ -1,0 +1,63 @@
+{
+  "builders": [
+    {
+    "type": "qemu",
+    "qemuargs": [
+	    [ "-m", "4096M" ]
+	    ],
+    "boot_command": [
+	    "sudo -i<enter>",
+	    "systemctl stop sshd.socket<enter>",
+    	    "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.yml<enter>",
+            "coreos-install -d /dev/sda -C {{user `channel`}} -c install.yml<enter>",
+    "reboot<enter>"
+	    ],
+    "accelerator": "kvm",
+    "output_directory": "qemu",
+    "disk_size": 4192,
+    "format": "qcow2",
+    "headless": true,
+    "http_directory": "http",
+    "http_port_min": 8081,
+    "http_port_max": 8081,
+
+    "iso_url": "coreos.iso"
+    "iso_checksum_type": "md5",
+    "iso_checksum": "8d397b69135d207452a78c3c3051339d",
+    "headless": true,
+    "boot_wait": "2m",
+      "ssh_port": 22,
+      "ssh_username": "core",
+      "ssh_key_path": "files/vagrant",
+      "ssh_wait_timeout": "10m",
+    "shutdown_command": "sudo -S shutdown -P now",
+    "floppy_files": [
+	    ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "files/coreos-setup-environment",
+      "destination": "coreos-setup-environment" 
+    },
+    {
+      "type": "file",
+      "source": "files/cloud-config.yml",
+      "destination": "cloud-config.yml" 
+    },
+    {
+      "type": "shell",
+      "environment_vars" : [],
+      "scripts": [
+        "scripts/oem.sh",
+        "scripts/cleanup.sh"
+      ]
+    }
+
+  ],
+  "post-processors": [
+    {
+    }
+  ]
+}
